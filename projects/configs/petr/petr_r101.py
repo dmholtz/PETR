@@ -265,10 +265,25 @@ lr_config = dict(
     min_lr_ratio=1e-3,
 )
 total_epochs = 24
-evaluation = dict(interval=24, pipeline=test_pipeline)
+evaluation = dict(interval=8, pipeline=test_pipeline)
 find_unused_parameters = False
 
 runner = dict(type='EpochBasedRunner', max_epochs=total_epochs)
 load_from=None
 resume_from=None
+
+log_config = dict(
+    interval=50,
+    hooks=[
+        dict(type='TextLoggerHook'),
+        dict(type='MMDetWandbHook',
+             init_kwargs=dict(),
+             interval=50,
+             log_checkpoint=True,
+             log_checkpoint_metadata=False,
+             num_eval_images=0,
+        ),
+    ]
+)
+
 
