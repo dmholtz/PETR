@@ -132,27 +132,24 @@ db_sampler = dict(
     prepare=dict(
         filter_by_difficulty=[-1],
         filter_by_min_points=dict(
-            car=5,
-            truck=5,
-            bus=5,
-            ambulance=5,
-            motorcycle=5,
-            bicycle=5,
-            pedestrian=5,
+            car=1,
+            truck=1,
+            bus=1,
+            ambulance=1,
+            motorcycle=1,
+            bicycle=1,
+            pedestrian=1,
         )
     ),
     classes=class_names,
     sample_groups=dict(
         car=2,
-        truck=3,
+        truck=5,
         ambulance=7,
-        bus=4,
-        trailer=6,
-        barrier=2,
-        motorcycle=6,
-        bicycle=6,
-        pedestrian=2,
-        traffic_cone=2
+        bus=5,
+        motorcycle=3,
+        bicycle=3,
+        pedestrian=4,
     ),
     points_loader=dict(
         type='LoadPointsFromFile',
@@ -219,8 +216,6 @@ data = dict(
         modality=input_modality,
         test_mode=False,
         use_valid_flag=True,
-        # we use box_type_3d='LiDAR' in kitti and nuscenes dataset
-        # and box_type_3d='Depth' in sunrgbd and scannet dataset.
         box_type_3d='LiDAR',
     ),
     val=dict(
@@ -285,5 +280,3 @@ log_config = dict(
         ),
     ]
 )
-
-
