@@ -1,5 +1,4 @@
 _base_ = [
-    '../../../mmdetection3d/configs/_base_/datasets/nus-3d.py',
     '../../../mmdetection3d/configs/_base_/default_runtime.py'
 ]
 
@@ -10,7 +9,7 @@ plugin_dir='projects/mmdet3d_plugin/'
 # overwrite nus-3d config (ours)
 class_names = [
     'car', 'truck', 'ambulance', 'bus',
-    'motorcycle', 'bicycle', 'pedestrian',
+    'bicycle', 'motorcycle', 'pedestrian',
 ]
 
 # overwrite nus-3d config (PETR)
@@ -48,6 +47,10 @@ model = dict(
         with_cp=True,
         dcn=dict(type='DCNv2', deform_groups=1, fallback_on_stride=False),
         stage_with_dcn=(False, False, True, True),
+        init_cfg=dict(
+            type='Pretrained',
+            checkpoint='open-mmlab://detectron2/resnet101_caffe',
+        ),
         # pretrained = 'ckpts/resnet50_msra-5891d200.pth',
     ),
     pts_bbox_head=dict(
@@ -125,39 +128,6 @@ dataset_type = 'CustomNuScenesDataset'
 data_root = 'data/nuscenes/'
 file_client_args = dict(backend='disk')
 
-db_sampler = dict(
-    data_root=data_root,
-    info_path=data_root + 'petr_dbinfos_train.pkl',
-    rate=1.0,
-    prepare=dict(
-        filter_by_difficulty=[-1],
-        filter_by_min_points=dict(
-            car=1,
-            truck=1,
-            bus=1,
-            ambulance=1,
-            motorcycle=1,
-            bicycle=1,
-            pedestrian=1,
-        )
-    ),
-    classes=class_names,
-    sample_groups=dict(
-        car=2,
-        truck=5,
-        ambulance=7,
-        bus=5,
-        motorcycle=3,
-        bicycle=3,
-        pedestrian=4,
-    ),
-    points_loader=dict(
-        type='LoadPointsFromFile',
-        coord_type='LIDAR',
-        load_dim=5,
-        use_dim=[0, 1, 2, 3, 4],
-        file_client_args=file_client_args)
-)
 ida_aug_conf = {
         "resize_lim": (0.8, 1.0),
         "final_dim": (512, 1408),
