@@ -37,9 +37,9 @@ model = dict(
     use_grid_mask=True,
     img_backbone=dict(
         type='ResNet',
-        depth=101,
+        depth=50,
         num_stages=4,
-        out_indices=(3,),
+        out_indices=(2, 3,),
         frozen_stages=-1,
         norm_cfg=dict(type='BN2d', requires_grad=False),
         norm_eval=True,
@@ -49,7 +49,7 @@ model = dict(
         stage_with_dcn=(False, False, True, True),
         init_cfg=dict(
             type='Pretrained',
-            checkpoint='open-mmlab://detectron2/resnet101_caffe',
+            checkpoint='open-mmlab://detectron2/resnet50_caffe',
         ),
         # pretrained = 'ckpts/resnet50_msra-5891d200.pth',
     ),
@@ -212,7 +212,7 @@ data = dict(
 
 optimizer = dict(
     type='AdamW', 
-    lr=2e-4,
+    lr=1e-4,
     paramwise_cfg=dict(
         custom_keys={
             'img_backbone': dict(lr_mult=0.1),
