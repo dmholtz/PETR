@@ -53,10 +53,16 @@ model = dict(
         ),
         # pretrained = 'ckpts/resnet50_msra-5891d200.pth',
     ),
+    img_neck=dict(
+        type='CPFPN',
+        in_channels=[1024, 2048],
+        out_channels=256,
+        num_outs=2,
+    ),
     pts_bbox_head=dict(
         type='PETRHead',
         num_classes=7,
-        in_channels=2048,
+        in_channels=256,
         num_query=900,
         LID=True,
         with_position=True,
